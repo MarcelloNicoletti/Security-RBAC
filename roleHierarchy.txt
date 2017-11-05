@@ -1,0 +1,9 @@
+Role2	Role1
+Role3	Role1
+Role4	Role2
+Role5	Role2
+Role6	Role2
+Role7	Role3
+Role8	Role6
+Role9	Role7
+Role10	Role7

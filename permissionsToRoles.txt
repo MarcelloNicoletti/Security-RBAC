@@ -1,0 +1,3 @@
+Role6	write*	File3
+Role2	seek	Disk1
+Role2	seek	Disk1
