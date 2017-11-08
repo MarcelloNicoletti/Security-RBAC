@@ -42,14 +42,13 @@ public class RoleObjectMatrix {
      * @param role       The base role to give the permission.
      * @param object     The object on which the permission is given.
      * @param permission The permission to give.
-     * @return true if permission was added, false if permission was
-     * previously added.
+     * @return false if permission was a duplicate or role or object didn't
+     * exist, true if permission successfully added.
      */
     public boolean addPermission (RbacRole role, RbacObject object,
             RbacPermission permission) {
-        checkRoleExists(role);
-        checkObjectExists(object);
-        return propagatePermission(role, object, permission, role);
+        return (roleExists(role) && objectExists(object)) &&
+                propagatePermission(role, object, permission, role);
     }
 
     /**
@@ -102,30 +101,23 @@ public class RoleObjectMatrix {
     }
 
     /**
-     * Checks if a given role exists in the system. Throws a runtime
-     * exception if not.
+     * Checks if a given role exists in the system.
      *
      * @param role The role to check.
+     * @return true if the role exists, false otherwise
      */
-    private void checkRoleExists (RbacRole role) {
-        if (!roleHierarchy.getAllRoles().contains(role)) {
-            throw new IllegalArgumentException(
-                    "Role \"" + role + "\" does not" +
-                            " yet exist.");
-        }
+    private boolean roleExists (RbacRole role) {
+        return roleHierarchy.getAllRoles().contains(role);
     }
 
     /**
-     * Checks if a given object exists in the system. Throws a runtime
-     * exception if not.
+     * Checks if a given object exists in the system.
      *
      * @param object The object to check.
+     * @return true if the object exists, false otherwise
      */
-    private void checkObjectExists (RbacObject object) {
-        if (!this.objects.contains(object)) {
-            throw new IllegalArgumentException("Object \"" + object + "\" " +
-                    "does not yet exist.");
-        }
+    private boolean objectExists (RbacObject object) {
+        return this.objects.contains(object);
     }
 
     /**
