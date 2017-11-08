@@ -1,20 +1,25 @@
 public abstract class RbacElement {
-    public String rbacType;
+    public String name;
     public int number;
 
     public RbacElement (String name) {
-        rbacType = name.replaceAll("\\d+", "");
-        number = Integer.parseInt(name.replaceAll("\\D+", ""));
+        this.name = name.replaceAll("\\d+", "");
+        String numStr = name.replaceAll("\\D+", "");
+        if (numStr.length() > 0) {
+            number = Integer.parseInt(numStr);
+        } else {
+            number = -1;
+        }
     }
 
     public RbacElement (RbacElement other) {
-        this.rbacType = other.rbacType;
+        this.name = other.name;
         this.number = other.number;
     }
 
     @Override
     public String toString () {
-        return rbacType + number;
+        return number < 0 ? name : name + number;
     }
 
     @Override
@@ -28,7 +33,8 @@ public abstract class RbacElement {
 
         RbacElement that = (RbacElement)o;
 
-        return this.rbacType.equals(that.rbacType) && number == that.number;
+        return this.name.equals(that.name) && ((this.number < 0 && that
+                .number < 0) || this.number == that.number);
     }
 
     @Override

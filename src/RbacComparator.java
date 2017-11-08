@@ -28,10 +28,10 @@ public class RbacComparator implements Comparator<RbacElement> {
 //            int number2 = Integer.parseInt(o2.replaceAll("\\D+", ""));
 //            return number1 - number2;
 //        }
-        if (o1.rbacType.compareTo(o2.rbacType) == 0) {
+        if (o1.name.compareTo(o2.name) == 0) {
             return o1.number - o2.number;
         } else {
-            return o1.rbacType.compareTo(o2.rbacType);
+            return o1.name.compareTo(o2.name);
         }
     }
 }
