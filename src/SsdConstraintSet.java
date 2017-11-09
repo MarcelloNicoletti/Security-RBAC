@@ -38,8 +38,8 @@ public class SsdConstraintSet {
      * @param roles The set of roles to test.
      * @return True if set satisfies all constraints.
      */
-    public boolean testAll (Set<RbacRole> roles) {
-        return constraints.stream().allMatch(constraint -> constraint.test
-                (roles));
+    public boolean testAgainstAll (Set<RbacRole> roles) {
+        return constraints.stream().allMatch(constraint ->
+                constraint.test(roles));
     }
 }
