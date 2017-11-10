@@ -11,6 +11,9 @@ public class Main {
     public static void main (String[] args) throws IOException {
         RoleObjectMatrix roleObjectMatrix = initializeRoleObjectMatrix();
         UserRoleMatrix userRoleMatrix = initializeUserRoleMatrix();
+
+        RbacController controller = new RbacController(roleObjectMatrix,
+                userRoleMatrix);
     }
 
     private static RoleObjectMatrix initializeRoleObjectMatrix () {
