@@ -42,4 +42,8 @@ public class SsdConstraintSet {
         return constraints.stream().allMatch(constraint ->
                 constraint.test(roles));
     }
+
+    public void printConstraints () {
+        // TODO: Add printing logic
+    }
 }

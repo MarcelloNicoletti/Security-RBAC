@@ -10,12 +10,14 @@ public class Main {
 
     public static void main (String[] args) throws IOException {
         RoleObjectMatrix roleObjectMatrix = initializeRoleObjectMatrix();
+        UserRoleMatrix userRoleMatrix = initializeUserRoleMatrix();
     }
 
-    private static RoleObjectMatrix initializeRoleObjectMatrix () throws
-            IOException {
-        RoleHierarchy roleHierarchy = getRoleHierarchy();
-        Set<RbacObject> objects = getResourceObjects();
+    private static RoleObjectMatrix initializeRoleObjectMatrix () {
+        RoleHierarchy roleHierarchy =
+                getRoleHierarchyFromFile("roleHierarchy.txt");
+        Set<RbacObject> objects =
+                getResourceObjectsFromFile("resourceObjects.txt");
 
         RoleObjectMatrix roleObjectMatrix =
                 new RoleObjectMatrix(roleHierarchy, objects);
@@ -24,7 +26,7 @@ public class Main {
         roleObjectMatrix.printMatrix(5);
 
         applyRoleHierarchyPermissions(roleObjectMatrix);
-        applyFilePermissions("permissionsToRoles.txt", roleObjectMatrix);
+        applyPermissionsFromFile("permissionsToRoles.txt", roleObjectMatrix);
 
         System.out.println("\nRole-Object Matrix after adding permissions " +
                 "from file:");
@@ -33,7 +35,25 @@ public class Main {
         return roleObjectMatrix;
     }
 
-    private static void applyFilePermissions (String filename,
+    private static UserRoleMatrix initializeUserRoleMatrix () {
+        SsdConstraintSet constraints =
+                getConstraintSetFromFile("roleSetsSSD.txt");
+        constraints.printConstraints();
+
+        UserRoleMatrix userRoleMatrix = new UserRoleMatrix(constraints);
+
+        addUsersFromFile("userRoles.txt", userRoleMatrix);
+
+        return userRoleMatrix;
+    }
+
+    private static boolean addUsersFromFile (String filename,
+            UserRoleMatrix userRoleMatrix) {
+        // TODO Add reading logic.
+        return false;
+    }
+
+    private static void applyPermissionsFromFile (String filename,
             RoleObjectMatrix roleObjectMatrix) {
         File permissionsFile = new File(filename);
         Scanner input = null;
@@ -71,15 +91,11 @@ public class Main {
         }
     }
 
-    private static RoleHierarchy getRoleHierarchy () throws IOException {
+    private static RoleHierarchy getRoleHierarchyFromFile (String filename) {
         RoleHierarchy roleHierarchy;
         do {
-            roleHierarchy = readRolesFromFile("roleHierarchy.txt");
-            if (roleHierarchy == null) {
-                System.out.println("Edit the file and press <enter> to " +
-                        "continue.");
-                System.in.read();
-            }
+            roleHierarchy = readRolesFromFile(filename);
+            displayEditMessageIfNull(roleHierarchy);
         } while (roleHierarchy == null);
 
         System.out.println("\nRole Hierarchy:");
@@ -120,15 +136,12 @@ public class Main {
         return rh;
     }
 
-    private static Set<RbacObject> getResourceObjects () throws IOException {
+    private static Set<RbacObject> getResourceObjectsFromFile (
+            String filename) {
         Set<RbacObject> objects;
         do {
-            objects = readObjectsFromFile("resourceObjects.txt");
-            if (objects == null) {
-                System.out.println("Edit the file and press <enter> to " +
-                        "continue.");
-                System.in.read();
-            }
+            objects = readObjectsFromFile(filename);
+            displayEditMessageIfNull(objects);
         } while (objects == null);
         return objects;
     }
@@ -156,5 +169,31 @@ public class Main {
         }
 
         return objects;
+    }
+
+    private static SsdConstraintSet getConstraintSetFromFile (String filename) {
+        SsdConstraintSet constraints;
+        do {
+            constraints = readConstraintsFromFile(filename);
+            displayEditMessageIfNull(constraints);
+        } while (constraints == null);
+        return constraints;
+    }
+
+    private static SsdConstraintSet readConstraintsFromFile (String filename) {
+        // TODO: Add reading code
+        return null;
+    }
+
+    private static void displayEditMessageIfNull (Object obj) {
+        if (obj == null) {
+            System.out.println("Edit the file and press <enter> to " +
+                    "continue.");
+            try {
+                System.in.read();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }
