@@ -1,6 +1,7 @@
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -51,7 +52,15 @@ public class UserRoleMatrix {
                     }
                     System.out.printf("Invalid line found in %s on line " +
                         "%d due to %s.", filename, lineNum, errorMsg);
-                    Main.displayEditMessageIfNull(null);
+                    if (null == null) {
+                        System.out.println("Edit the file and press <enter> to " +
+                            "continue.");
+                        try {
+                            System.in.read();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
                     break;
                 }
                 lineNum++;

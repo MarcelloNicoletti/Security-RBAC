@@ -1,6 +1,7 @@
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.*;
 
 /**
@@ -44,7 +45,15 @@ public class RoleObjectMatrix {
         Set<RbacObject> objects;
         do {
             objects = readObjectsFromFile(filename);
-            Main.displayEditMessageIfNull(objects);
+            if (objects == null) {
+                System.out.println("Edit the file and press <enter> to " +
+                    "continue.");
+                try {
+                    System.in.read();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         } while (objects == null);
         return objects;
     }

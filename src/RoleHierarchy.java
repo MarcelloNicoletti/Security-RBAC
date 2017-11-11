@@ -1,6 +1,7 @@
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -30,7 +31,15 @@ public class RoleHierarchy {
         RoleHierarchy roleHierarchy;
         do {
             roleHierarchy = readRolesFromFile(filename);
-            Main.displayEditMessageIfNull(roleHierarchy);
+            if (roleHierarchy == null) {
+                System.out.println("Edit the file and press <enter> to " +
+                    "continue.");
+                try {
+                    System.in.read();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         } while (roleHierarchy == null);
 
         System.out.println("\nRole Hierarchy:");

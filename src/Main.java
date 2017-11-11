@@ -44,16 +44,4 @@ public class Main {
 
         return userRoleMatrix;
     }
-
-    public static void displayEditMessageIfNull (Object obj) {
-        if (obj == null) {
-            System.out.println("Edit the file and press <enter> to " +
-                "continue.");
-            try {
-                System.in.read();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
 }

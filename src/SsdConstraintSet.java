@@ -1,3 +1,4 @@
+import java.io.IOException;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -15,7 +16,15 @@ public class SsdConstraintSet {
         SsdConstraintSet constraints;
         do {
             constraints = readConstraintsFromFile(filename);
-            Main.displayEditMessageIfNull(constraints);
+            if (constraints == null) {
+                System.out.println("Edit the file and press <enter> to " +
+                    "continue.");
+                try {
+                    System.in.read();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         } while (constraints == null);
         return constraints;
     }
