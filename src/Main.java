@@ -1,5 +1,5 @@
 import java.io.IOException;
-import java.util.*;
+import java.util.Set;
 
 public class Main {
 
@@ -8,17 +8,17 @@ public class Main {
         UserRoleMatrix userRoleMatrix = initializeUserRoleMatrix();
 
         RbacController controller = new RbacController(roleObjectMatrix,
-                userRoleMatrix);
+            userRoleMatrix);
     }
 
     private static RoleObjectMatrix initializeRoleObjectMatrix () {
         RoleHierarchy roleHierarchy =
-                RoleHierarchy.getRoleHierarchyFromFile("roleHierarchy.txt");
+            RoleHierarchy.getRoleHierarchyFromFile("roleHierarchy.txt");
         Set<RbacObject> objects =
-                RoleObjectMatrix.getResourceObjectsFromFile("resourceObjects.txt");
+            RoleObjectMatrix.getResourceObjectsFromFile("resourceObjects.txt");
 
         RoleObjectMatrix roleObjectMatrix =
-                new RoleObjectMatrix(roleHierarchy, objects);
+            new RoleObjectMatrix(roleHierarchy, objects);
 
         System.out.println("\nInitial Role-Object Matrix:");
         roleObjectMatrix.printMatrix(5);
@@ -27,7 +27,7 @@ public class Main {
         roleObjectMatrix.applyPermissionsFromFile("permissionsToRoles.txt");
 
         System.out.println("\nRole-Object Matrix after adding permissions " +
-                "from file:");
+            "from file:");
         roleObjectMatrix.printMatrix(5);
 
         return roleObjectMatrix;
@@ -35,7 +35,7 @@ public class Main {
 
     private static UserRoleMatrix initializeUserRoleMatrix () {
         SsdConstraintSet constraints =
-                SsdConstraintSet.getConstraintSetFromFile("roleSetsSSD.txt");
+            SsdConstraintSet.getConstraintSetFromFile("roleSetsSSD.txt");
         constraints.printConstraints();
 
         UserRoleMatrix userRoleMatrix = new UserRoleMatrix(constraints);
@@ -48,7 +48,7 @@ public class Main {
     public static void displayEditMessageIfNull (Object obj) {
         if (obj == null) {
             System.out.println("Edit the file and press <enter> to " +
-                    "continue.");
+                "continue.");
             try {
                 System.in.read();
             } catch (IOException e) {

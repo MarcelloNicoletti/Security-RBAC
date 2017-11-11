@@ -12,7 +12,7 @@ public class RoleObjectMatrix {
     private static final RbacComparator RBAC_COMPARATOR = new RbacComparator();
 
     private Map<RbacRole, Map<RbacObject, Map<RbacPermission, Set<RbacRole>>>>
-            matrix;
+        matrix;
     private Set<RbacObject> objects;
     private RoleHierarchy roleHierarchy;
 
@@ -24,14 +24,14 @@ public class RoleObjectMatrix {
      * @param objects       The set of objects for the system.
      */
     public RoleObjectMatrix (RoleHierarchy roleHierarchy,
-            Set<RbacObject> objects) {
+        Set<RbacObject> objects) {
         this.objects = new HashSet<>(objects);
         this.roleHierarchy = roleHierarchy.getCopy();
 
         matrix = new HashMap<>();
         for (RbacRole role : this.roleHierarchy.getAllRoles()) {
             Map<RbacObject, Map<RbacPermission, Set<RbacRole>>> domain = new
-                    HashMap<>();
+                HashMap<>();
             for (RbacObject object : this.objects) {
                 domain.put(object, new HashMap<>());
             }
@@ -40,7 +40,7 @@ public class RoleObjectMatrix {
     }
 
     static Set<RbacObject> getResourceObjectsFromFile (
-            String filename) {
+        String filename) {
         Set<RbacObject> objects;
         do {
             objects = readObjectsFromFile(filename);
@@ -57,7 +57,7 @@ public class RoleObjectMatrix {
             input = new Scanner(new FileInputStream(file));
         } catch (FileNotFoundException e) {
             System.err.printf("The resource objects file, %s, does not exist.",
-                    filename);
+                filename);
             return null;
         }
 
@@ -87,7 +87,7 @@ public class RoleObjectMatrix {
         while (input.hasNextLine()) {
             String[] row = input.nextLine().split("\\s+");
             this.addPermission(new RbacRole(row[0]),
-                    new RbacObject(row[2]), new RbacPermission(row[1]));
+                new RbacObject(row[2]), new RbacPermission(row[1]));
         }
     }
 
@@ -100,7 +100,7 @@ public class RoleObjectMatrix {
         }
         for (RbacRole role : this.getRoles()) {
             RbacRole descendant =
-                    this.getRoleHierarchy().getDescendant(role);
+                this.getRoleHierarchy().getDescendant(role);
             RbacObject roleAsObject = new RbacObject(role);
             RbacPermission permission = new RbacPermission("own");
             if (descendant != null) {
@@ -119,9 +119,9 @@ public class RoleObjectMatrix {
      * exist, true if permission successfully added.
      */
     public boolean addPermission (RbacRole role, RbacObject object,
-            RbacPermission permission) {
+        RbacPermission permission) {
         return (roleExists(role) && objectExists(object)) &&
-                propagatePermission(role, object, permission, role);
+            propagatePermission(role, object, permission, role);
     }
 
     /**
@@ -205,10 +205,10 @@ public class RoleObjectMatrix {
      * previously added.
      */
     private boolean propagatePermission (RbacRole role, RbacObject object,
-            RbacPermission permission, RbacRole source) {
+        RbacPermission permission, RbacRole source) {
         boolean added;
         Set<RbacRole> currentSources =
-                matrix.get(role).get(object).get(permission);
+            matrix.get(role).get(object).get(permission);
         if (currentSources == null) {
             Set<RbacRole> sources = new HashSet<>();
             sources.add(source);
@@ -237,7 +237,7 @@ public class RoleObjectMatrix {
         List<RbacObject> sortedObjects = new ArrayList<>(this.objects);
         sortedObjects.sort(RBAC_COMPARATOR);
         List<RbacRole> sortedRoles =
-                new ArrayList<>(this.roleHierarchy.getAllRoles());
+            new ArrayList<>(this.roleHierarchy.getAllRoles());
         sortedRoles.sort(RBAC_COMPARATOR);
 
         endCol = Math.min(endCol, objects.size());
@@ -251,9 +251,9 @@ public class RoleObjectMatrix {
             for (int i = startCol; i < endCol; i++) {
                 RbacObject object = sortedObjects.get(i);
                 Map<RbacPermission, Set<RbacRole>> permissions =
-                        matrix.get(role).get(object);
+                    matrix.get(role).get(object);
                 String permissionsDisplay =
-                        getDisplayString(permissions.keySet());
+                    getDisplayString(permissions.keySet());
                 System.out.printf("%" + colWidth + "s ", permissionsDisplay);
             }
             System.out.println();

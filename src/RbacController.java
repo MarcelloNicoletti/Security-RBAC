@@ -3,7 +3,7 @@ public class RbacController {
     private UserRoleMatrix userRoleMatrix;
 
     public RbacController (RoleObjectMatrix roleObjectMatrix, UserRoleMatrix
-            userRoleMatrix) {
+        userRoleMatrix) {
         this.roleObjectMatrix = roleObjectMatrix;
         this.userRoleMatrix = userRoleMatrix;
     }

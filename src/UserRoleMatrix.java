@@ -35,22 +35,22 @@ public class UserRoleMatrix {
                 String[] row = input.nextLine().split("\\s+");
                 RbacUser user = new RbacUser(row[0]);
                 Set<RbacRole> roles =
-                        Arrays.stream(row).skip(1).map(RbacRole::new)
-                                .collect(Collectors.toSet());
+                    Arrays.stream(row).skip(1).map(RbacRole::new)
+                        .collect(Collectors.toSet());
                 boolean added = this.giveRolesToUser(user, roles);
                 if (!added) {
                     error = true;
                     String errorMsg;
                     int constraintBroken =
-                            this.getConstraintSet()
-                                    .indexOfFirstBrokenConstraint(roles);
+                        this.getConstraintSet()
+                            .indexOfFirstBrokenConstraint(roles);
                     if (constraintBroken != -1) {
                         errorMsg = "Constraint #" + constraintBroken;
                     } else {
                         errorMsg = "Duplicated user " + user;
                     }
                     System.out.printf("Invalid line found in %s on line " +
-                            "%d due to %s.", filename, lineNum, errorMsg);
+                        "%d due to %s.", filename, lineNum, errorMsg);
                     Main.displayEditMessageIfNull(null);
                     break;
                 }
@@ -61,7 +61,7 @@ public class UserRoleMatrix {
 
     public boolean giveRolesToUser (RbacUser user, Set<RbacRole> roles) {
         Set<RbacRole> testRoles = new HashSet<>(matrix.computeIfAbsent(user,
-                k -> new HashSet<>()));
+            k -> new HashSet<>()));
 
         if (testRoles.size() != 0) {
             return false;
@@ -71,7 +71,7 @@ public class UserRoleMatrix {
         if (constraints.testAgainstAll(testRoles)) {
             matrix.put(user, testRoles);
             roles.forEach(role -> usersPerRole.computeIfAbsent(role, k -> new
-                    HashSet<>()).add(user));
+                HashSet<>()).add(user));
             return true;
         } else {
             return false;

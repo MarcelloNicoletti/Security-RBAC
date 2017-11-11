@@ -28,7 +28,7 @@ public class SsdConstraintSet {
     /**
      * Adds a new constraint to this set.
      *
-     * @param n The cardinality of the new constraint.
+     * @param n     The cardinality of the new constraint.
      * @param roles The set the new constraint applies to.
      * @return True if the constraint was added.
      */
@@ -54,7 +54,7 @@ public class SsdConstraintSet {
      */
     public boolean testAgainstAll (Set<RbacRole> roles) {
         return constraints.stream().allMatch(constraint ->
-                constraint.test(roles));
+            constraint.test(roles));
     }
 
     public int indexOfFirstBrokenConstraint (Set<RbacRole> roles) {

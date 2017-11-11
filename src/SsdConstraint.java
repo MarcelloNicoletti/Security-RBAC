@@ -11,13 +11,13 @@ public class SsdConstraint {
      * N = 2 is a mutually exclusive constraint as a roleSet may only have one
      * from this constraint that matches to pass.
      *
-     * @param n The Cardinality of the constraint.
+     * @param n       The Cardinality of the constraint.
      * @param roleSet The set of roles under constraint.
      */
     public SsdConstraint (int n, Set<RbacRole> roleSet) {
         if (n < 2) {
             throw new IllegalArgumentException("N must be greater than or " +
-                    "equal to 2.");
+                "equal to 2.");
         }
         this.n = n;
         this.roleSet = roleSet;

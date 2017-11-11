@@ -34,7 +34,7 @@ public abstract class RbacElement {
         RbacElement that = (RbacElement)o;
 
         return this.name.equals(that.name) && ((this.number < 0 && that
-                .number < 0) || this.number == that.number);
+            .number < 0) || this.number == that.number);
     }
 
     @Override

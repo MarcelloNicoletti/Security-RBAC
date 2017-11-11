@@ -46,7 +46,7 @@ public class RoleHierarchy {
             input = new Scanner(new FileInputStream(file));
         } catch (FileNotFoundException e) {
             System.err.printf("The role hierarchy file, %s, does not exist.%n",
-                    filename);
+                filename);
             return null;
         }
 
@@ -55,10 +55,10 @@ public class RoleHierarchy {
             String[] roles = input.nextLine().split("\\s+");
             if (roles.length > 0) {
                 boolean added = rh.addRelationship(new RbacRole(roles[0]),
-                        new RbacRole(roles[1]));
+                    new RbacRole(roles[1]));
                 if (!added) {
                     System.out.printf("Invalid line found in %s on line " +
-                            "%d%n", filename, line);
+                        "%d%n", filename, line);
                     input.close();
                     return null;
                 }
@@ -175,7 +175,7 @@ public class RoleHierarchy {
      */
     private Set<RbacRole> getRootRoles () {
         return this.roles.stream()
-                .filter(role -> this.descendants.get(role) == null)
-                .collect(Collectors.toSet());
+            .filter(role -> this.descendants.get(role) == null)
+            .collect(Collectors.toSet());
     }
 }
