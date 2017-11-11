@@ -1,3 +1,6 @@
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -21,6 +24,51 @@ public class RoleHierarchy {
         this.roles = new HashSet<>();
         this.ascendants = new HashMap<>();
         this.descendants = new HashMap<>();
+    }
+
+    public static RoleHierarchy getRoleHierarchyFromFile (String filename) {
+        RoleHierarchy roleHierarchy;
+        do {
+            roleHierarchy = readRolesFromFile(filename);
+            Main.displayEditMessageIfNull(roleHierarchy);
+        } while (roleHierarchy == null);
+
+        System.out.println("\nRole Hierarchy:");
+        roleHierarchy.printAscendantRelationships();
+        return roleHierarchy;
+    }
+
+    private static RoleHierarchy readRolesFromFile (String filename) {
+        RoleHierarchy rh = new RoleHierarchy();
+        File file = new File(filename);
+        Scanner input = null;
+        try {
+            input = new Scanner(new FileInputStream(file));
+        } catch (FileNotFoundException e) {
+            System.err.printf("The role hierarchy file, %s, does not exist.%n",
+                    filename);
+            return null;
+        }
+
+        int line = 1;
+        while (input.hasNextLine()) {
+            String[] roles = input.nextLine().split("\\s+");
+            if (roles.length > 0) {
+                boolean added = rh.addRelationship(new RbacRole(roles[0]),
+                        new RbacRole(roles[1]));
+                if (!added) {
+                    System.out.printf("Invalid line found in %s on line " +
+                            "%d%n", filename, line);
+                    input.close();
+                    return null;
+                }
+            }
+            line++;
+        }
+
+        input.close();
+
+        return rh;
     }
 
     /**

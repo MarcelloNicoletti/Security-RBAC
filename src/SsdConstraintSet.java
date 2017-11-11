@@ -1,4 +1,4 @@
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 public class SsdConstraintSet {
@@ -8,7 +8,21 @@ public class SsdConstraintSet {
      * Constructs a new empty set of constraints.
      */
     public SsdConstraintSet () {
-        this.constraints = new HashSet<>();
+        this.constraints = new LinkedHashSet<>();
+    }
+
+    public static SsdConstraintSet getConstraintSetFromFile (String filename) {
+        SsdConstraintSet constraints;
+        do {
+            constraints = readConstraintsFromFile(filename);
+            Main.displayEditMessageIfNull(constraints);
+        } while (constraints == null);
+        return constraints;
+    }
+
+    private static SsdConstraintSet readConstraintsFromFile (String filename) {
+        // TODO: Add reading code
+        return null;
     }
 
     /**
@@ -41,6 +55,19 @@ public class SsdConstraintSet {
     public boolean testAgainstAll (Set<RbacRole> roles) {
         return constraints.stream().allMatch(constraint ->
                 constraint.test(roles));
+    }
+
+    public int indexOfFirstBrokenConstraint (Set<RbacRole> roles) {
+        int idx = -1;
+        int i = 0;
+        for (SsdConstraint constraint : constraints) {
+            if (!constraint.test(roles)) {
+                idx = i;
+                break;
+            }
+            i++;
+        }
+        return idx;
     }
 
     public void printConstraints () {

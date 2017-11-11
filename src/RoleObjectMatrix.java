@@ -1,3 +1,6 @@
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.*;
 
 /**
@@ -33,6 +36,76 @@ public class RoleObjectMatrix {
                 domain.put(object, new HashMap<>());
             }
             matrix.put(role, domain);
+        }
+    }
+
+    static Set<RbacObject> getResourceObjectsFromFile (
+            String filename) {
+        Set<RbacObject> objects;
+        do {
+            objects = readObjectsFromFile(filename);
+            Main.displayEditMessageIfNull(objects);
+        } while (objects == null);
+        return objects;
+    }
+
+    private static Set<RbacObject> readObjectsFromFile (String filename) {
+        Set<RbacObject> objects = new HashSet<>();
+        File file = new File(filename);
+        Scanner input = null;
+        try {
+            input = new Scanner(new FileInputStream(file));
+        } catch (FileNotFoundException e) {
+            System.err.printf("The resource objects file, %s, does not exist.",
+                    filename);
+            return null;
+        }
+
+        String[] rawObjects = input.nextLine().split("\\s+");
+        for (String rawObject : rawObjects) {
+            RbacObject rbacObject = new RbacObject(rawObject);
+            if (objects.contains(rbacObject)) {
+                System.out.printf("Duplicate object found: %s", rawObject);
+                return null;
+            }
+            objects.add(rbacObject);
+        }
+
+        return objects;
+    }
+
+    public void applyPermissionsFromFile (String filename) {
+        File permissionsFile = new File(filename);
+        Scanner input = null;
+        try {
+            input = new Scanner(new FileInputStream(permissionsFile));
+        } catch (FileNotFoundException e) {
+            System.err.printf("Permissions file %s not found.", filename);
+            System.exit(1);
+        }
+
+        while (input.hasNextLine()) {
+            String[] row = input.nextLine().split("\\s+");
+            this.addPermission(new RbacRole(row[0]),
+                    new RbacObject(row[2]), new RbacPermission(row[1]));
+        }
+    }
+
+    public void applyRoleHierarchyPermissions () {
+        for (RbacRole role : this.getRoles()) {
+            RbacObject roleAsObject = new RbacObject(role);
+            RbacPermission permission = new RbacPermission("control");
+            this.addObject(roleAsObject);
+            this.addPermission(role, roleAsObject, permission);
+        }
+        for (RbacRole role : this.getRoles()) {
+            RbacRole descendant =
+                    this.getRoleHierarchy().getDescendant(role);
+            RbacObject roleAsObject = new RbacObject(role);
+            RbacPermission permission = new RbacPermission("own");
+            if (descendant != null) {
+                this.addPermission(descendant, roleAsObject, permission);
+            }
         }
     }
 
