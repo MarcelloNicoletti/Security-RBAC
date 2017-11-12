@@ -44,6 +44,7 @@ public class Main {
 
         userRoleMatrix.addUsersFromFile("userRoles.txt");
 
+        System.out.println("\nUser-Role matrix");
         userRoleMatrix.printMatrix();
 
         return userRoleMatrix;

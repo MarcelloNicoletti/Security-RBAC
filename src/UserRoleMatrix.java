@@ -107,14 +107,33 @@ public class UserRoleMatrix {
     }
 
     public void printMatrix () {
+        List<RbacUser> rbacUsers = new ArrayList<>(matrix.keySet());
+        rbacUsers.sort(RBAC_COMPARATOR);
+        int maxUserWidth = rbacUsers.stream().mapToInt(k -> k.toString().length())
+            .reduce(Integer.MIN_VALUE, Math::max);
+        
         List<RbacRole> sortedRoles = new ArrayList<>(this.roles);
         sortedRoles.sort(RBAC_COMPARATOR);
         int maxRoleWidth = sortedRoles.stream().mapToInt(k -> k.toString().length())
             .reduce(Integer.MIN_VALUE, Math::max);
 
-        System.out.printf("%" + maxRoleWidth + "s ", " ");
+        System.out.printf("%" + maxUserWidth + "s ", " ");
         for (RbacRole role : sortedRoles) {
             System.out.printf("%" + maxRoleWidth + "s ", role.toString());
+        }
+        System.out.println();
+
+        for (RbacUser user : rbacUsers) {
+            System.out.printf("%" + maxUserWidth + "s ", user.toString());
+            Set<RbacRole> userRoles = matrix.get(user);
+            for (RbacRole role : sortedRoles) {
+                if (userRoles.contains(role)) {
+                    System.out.printf("%" + maxRoleWidth + "s ", "+");
+                } else {
+                    System.out.printf("%" + maxRoleWidth + "s ", " ");
+                }
+            }
+            System.out.println();
         }
     }
 }
