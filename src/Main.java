@@ -5,7 +5,8 @@ public class Main {
 
     public static void main (String[] args) throws IOException {
         RoleObjectMatrix roleObjectMatrix = initializeRoleObjectMatrix();
-        UserRoleMatrix userRoleMatrix = initializeUserRoleMatrix();
+        Set<RbacRole> roles = roleObjectMatrix.getRoles();
+        UserRoleMatrix userRoleMatrix = initializeUserRoleMatrix(roles);
 
         RbacController controller = new RbacController(roleObjectMatrix,
             userRoleMatrix);
@@ -33,14 +34,17 @@ public class Main {
         return roleObjectMatrix;
     }
 
-    private static UserRoleMatrix initializeUserRoleMatrix () {
+    private static UserRoleMatrix initializeUserRoleMatrix (Set<RbacRole>
+        roles) {
         SsdConstraintSet constraints =
             SsdConstraintSet.getConstraintSetFromFile("roleSetsSSD.txt");
         constraints.printConstraints();
 
-        UserRoleMatrix userRoleMatrix = new UserRoleMatrix(constraints);
+        UserRoleMatrix userRoleMatrix = new UserRoleMatrix(constraints, roles);
 
         userRoleMatrix.addUsersFromFile("userRoles.txt");
+
+        userRoleMatrix.printMatrix();
 
         return userRoleMatrix;
     }

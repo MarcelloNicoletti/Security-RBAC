@@ -1,5 +1,0 @@
-User1	Role2	Role5
-User2  Role1  Role4
-User3  Role5
-User4  Role5
-User5  Role5
