@@ -97,9 +97,13 @@ public class UserRoleMatrix {
         }
     }
 
-    public void clearUsers () {
+    private void clearUsers () {
         matrix.clear();
         usersPerRole.clear();
+    }
+
+    public Set<RbacUser> getUsers () {
+        return matrix.keySet();
     }
 
     public SsdConstraintSet getConstraintSet () {
@@ -111,7 +115,7 @@ public class UserRoleMatrix {
         rbacUsers.sort(RBAC_COMPARATOR);
         int maxUserWidth = rbacUsers.stream().mapToInt(k -> k.toString().length())
             .reduce(Integer.MIN_VALUE, Math::max);
-        
+
         List<RbacRole> sortedRoles = new ArrayList<>(this.roles);
         sortedRoles.sort(RBAC_COMPARATOR);
         int maxRoleWidth = sortedRoles.stream().mapToInt(k -> k.toString().length())
@@ -135,5 +139,9 @@ public class UserRoleMatrix {
             }
             System.out.println();
         }
+    }
+
+    public Set<RbacRole> getRoles (RbacUser user) {
+        return matrix.get(user);
     }
 }

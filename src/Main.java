@@ -1,4 +1,5 @@
 import java.io.IOException;
+import java.util.Scanner;
 import java.util.Set;
 
 public class Main {
@@ -10,6 +11,34 @@ public class Main {
 
         RbacController controller = new RbacController(roleObjectMatrix,
             userRoleMatrix);
+
+        boolean doQuery = true;
+        Scanner in = new Scanner(System.in);
+        while (doQuery) {
+            System.out.print("\nPlease enter the user for query: ");
+            RbacUser user = new RbacUser(in.nextLine());
+
+            System.out.print("Enter object to query (empty to get all): ");
+            String objString = in.nextLine();
+            RbacObject object = new RbacObject(objString);
+            if (objString.isEmpty()) {
+                object = null;
+            }
+
+            System.out.print("Enter object to query (empty to get all): ");
+            String rightString = in.nextLine();
+            RbacPermission permission = new RbacPermission(rightString);
+            if (rightString.isEmpty()) {
+                permission = null;
+            }
+
+            boolean hasRight = controller.query(user, object, permission);
+
+            System.out
+                .println("Would you like to continue for the next query? ");
+            String answer = in.nextLine();
+            doQuery = answer.charAt(0) == 'y' || answer.charAt(0) == 'Y';
+        }
     }
 
     private static RoleObjectMatrix initializeRoleObjectMatrix () {

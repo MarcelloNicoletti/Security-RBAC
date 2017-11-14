@@ -286,4 +286,13 @@ public class RoleObjectMatrix {
         }
         return current.toString();
     }
+
+    public Set<RbacObject> getObjects () {
+        return objects;
+    }
+
+    public Set<RbacPermission> getObjectPermissionsForRole (RbacRole role,
+        RbacObject object) {
+        return matrix.get(role).get(object).keySet();
+    }
 }
