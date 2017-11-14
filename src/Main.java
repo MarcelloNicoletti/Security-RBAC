@@ -12,6 +12,10 @@ public class Main {
         RbacController controller = new RbacController(roleObjectMatrix,
             userRoleMatrix);
 
+        doQueryLoop(controller);
+    }
+
+    private static void doQueryLoop (RbacController controller) {
         boolean doQuery = true;
         Scanner in = new Scanner(System.in);
         while (doQuery) {
