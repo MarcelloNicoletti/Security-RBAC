@@ -1,1 +1,1 @@
-File1	File2	File3	File4	Process1	Process2	Process3	Disk1	Disk2
+F1	F2	F3	F4	P1	P2	P3	D1	D2

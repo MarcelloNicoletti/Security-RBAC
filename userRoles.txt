@@ -1,2 +1,2 @@
-User1	Role2	Role5
-User2  Role1    Role10
+U1	R2	R5
+U2  R1    R10
